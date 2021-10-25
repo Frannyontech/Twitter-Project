@@ -7,6 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   
          paginates_per 50
+
   def to_s
     self.name
   end
@@ -20,5 +21,5 @@ class User < ApplicationRecord
       end
     end
     return false
-   end
   end
+end

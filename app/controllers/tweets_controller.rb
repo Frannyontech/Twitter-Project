@@ -3,7 +3,8 @@ class TweetsController < ApplicationController
 
   # GET /tweets or /tweets.json
   def index
-    @tweets = Tweet.page params[:page]
+    @tweets = Tweet.all.order("created_at DESC").limit(50)
+    
   end
 
   # GET /tweets/1 or /tweets/1.json
@@ -21,8 +22,8 @@ class TweetsController < ApplicationController
 
   # POST /tweets or /tweets.json
   def create
-    @tweet = Tweet.new(tweet_params)
-    @tweet.user_id = current_user
+    @tweet = Current_user.tweets.new(tweet_params)
+  
 
     respond_to do |format|
       if @tweet.save

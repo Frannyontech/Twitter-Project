@@ -13,6 +13,5 @@ class LikesController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
       end
     end
-
   end
 end
