@@ -1,17 +1,36 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
-  def create
-    @tweet = Tweet.find(params[:tweet_id].to_i)
-    @like = Like.new
-    @like.user = current_user
-    @like.tweet = @tweet
+  before_action :set_like, only: [:destroy]
+  skip_before_action :verify_authenticity_token  
 
-    respond_to do |format|
-      if @like.save
-        format.html { redirect_to root_path, notice: "Like Creado" }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-      end
+  def create
+    if existing_like?
+      flash[:notice] = 'ya le diste like'
+    else
+      @tweet.likes.create(user_id: current_user.id)
     end
+    redirect_to root_path
+  end
+  
+  def destroy
+    if existing_like?
+      @like.destroy
+    else
+      flash[:notice] = 'No se puede borrar, no tiene like'
+    end
+    redirect_to root_path
+  end
+
+
+  def set_tweet
+    @tweet = Tweet.find(params[:tweet_id])
+  end
+
+  def existing_like?
+    Like.where(user_id: current_user.id, tweet_id: params[:tweet_id]).exists?
+  end
+
+  def set_like
+    @like = @tweet.likes.find(params[:id])
   end
 end

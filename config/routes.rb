@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
   
   # get 'likes/create'
-  resources :likes
+  # resources :likes
   # devise_for :users
   resources :tweets do
     resources :likes, only: [:create]
+    member do 
+      post 'retweet'
+    end
   end
   resources :users do
     resources :tweets

@@ -1,6 +1,9 @@
 <% if user_signed_in? %>
-  <%= link_to 'New Tweet', new_user_tweet_path(current_user), class: "btn btn-primary p-3 text-white" %>
+  
+  <%= render 'form', tweet: @tweet %>
 <% end %>
+
+
 
 <% @tweets.each do |tweet| %>
   <div class="card mb-3" style="max-width: 540px;">
@@ -9,23 +12,32 @@
         <td><%= image_tag(tweet.user.profile_url, size: "100x100") %></td>
       </div>
       <div class="col-md-8">
-      <div class="card-body">
+        <div class="card-body">
             <h5 class="card-title"><td><%= tweet.user %></td>:</h5>
             <p class="card-text"> <td><%= tweet.content %></td></p>
-            <% if current_user.like?(tweet.id) %>
-              <td><%= link_to "Deslike", root_path %></td>
-            <% else %>
-              <td><%= link_to "like", tweet_likes_path(tweet.id), method: :post %></td>
-            <% end %>
-            
-            <p class="card-text"><small class="text-muted"><%= tweet.created_at %></small></p>
+          <% if current_user.like?(tweet.id) %>
+            <td><%= link_to "Dislike", root_path %></td>
+          <% else %>
+            <td><%= link_to "like", tweet_likes_path(tweet.id), method: :post %></td>
+          <% end %>
+            <td><%= tweet.retweet %></td>
+            <td><%= tweet.likes.count %></td>
+            <p class="card-text"><small class="text-muted"><%= link_to "#{time_ago_in_words(tweet.created_at)} ago", tweet%></small></p>
+              <td><button type="button" class="btn btn-outline-dark"><%= link_to 'Show', tweet %></button></td>
+          <% if !tweet.rt_ref.nil? %>
+            <td><%= link_to "#{tweet.user.user_name} ha retweeteado", tweet.retweet_ref  %></td>
+          <% end %>  
+            <td><button type="button" class="btn btn-outline-dark"><%= link_to 'Edit', edit_tweet_path(tweet) %></button></td>
+            <td><button type="button" class="btn btn-outline-dark"><%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %></button></td>
+            <td><%= link_to retweet_tweet_path(tweet), data: { confirm: 'Do you want retweet?' }, method: :post  do %>
+              <i class="fas fa-retweet"></i>
+          <% end %></td>
+          
       </div>
       </div>
     </div>  
   </div>
 <% end %>
 
-<div class="d-flex justify-content-center">
-  <%= paginate @tweets %>
-</div>
+<%= paginate @tweets %>
 

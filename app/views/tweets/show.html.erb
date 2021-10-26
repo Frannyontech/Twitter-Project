@@ -2,8 +2,18 @@
 
 <p>
   <strong>Tweet:</strong>
-  <%= @tweet.tweet %>
+  <%= @tweet.user.name %>
+    <img src="<%= @tweet.user.profile_url %>" width="60" height="60" class="rounded-circle mb-2" >
+</p>
 </p>
 
-<%= link_to 'Edit', edit_tweet_path(@tweet) %> |
-<%= link_to 'Back', tweets_path %>
+<p>
+<strong>Content:</strong>
+<%= @tweet.content %>
+</p>
+
+
+
+<button type="button" class="btn btn-outline-primary"><%= link_to 'Edit', edit_tweet_path(@tweet) %> </button>
+<button type="button" class="btn btn-outline-primary"><%= link_to 'Back', tweets_path %> </button>
+
