@@ -23,8 +23,9 @@ class TweetsController < ApplicationController
 
   # POST /tweets or /tweets.json
   def create
-    @tweet = Tweet.new(tweet_params)
-    @tweet.user = current_user
+    @tweet = Tweet.create(tweet_params)
+    @user = current_user
+    @tweet.user = @user
   
 
     respond_to do |format|
@@ -60,24 +61,21 @@ class TweetsController < ApplicationController
     end
   end
 
-  def retweet_ref
-    redirect_to root_path, alert: "cannot retweet" and return if @tweet.user == current_user
-    retweeted = Tweer.new(content: @tweet.content)
-    retweeted.user = current_user
-    retweeted.rt_ref = @tweet.id
-    if retweeted.save
-      if @tweet.retweet.nil?
-        @tweet.update(retweet: @tweet.retweet =1)
-      else
-        @tweet.update(retweet: tweet.retweet += 1)
-      end
-      redirect_to root_path, notice: "tweet successfully uploaded"
-    else 
-      redirect_to root_path, alert: "unable to retweet"
+  def retweet
+    
+    original_tweet = Tweet.find(params[:id])
+    @tweet = Tweet.create(
+      content: original_tweet.content,
+      user_id: original_tweet.user_id,
+      retweet: current_user.id,
+      tweet_id: original_tweet.id
+    )
+    if @tweet.save
+      redirect_to root_path, notice: "Retweet was successfully created."
     end
-  end  
+  end 
   
-
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -12,14 +12,7 @@ class User < ApplicationRecord
     self.name
   end
 
-  def like?(tweet_id)
-    tweet = Tweet.find(tweet_id)
-    likes = tweet.likes
-    likes.each do |like|
-      if like.user == self
-        return true
-      end
-    end
-    return false
+  def RT_count
+    self.tweets.count {|tweet| !tweet.tweet_id.nil?}
   end
 end

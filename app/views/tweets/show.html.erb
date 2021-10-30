@@ -1,19 +1,29 @@
 <p id="notice"><%= notice %></p>
-
+<% if user_signed_in? %>
 <p>
   <strong>Tweet:</strong>
   <%= @tweet.user.name %>
-    <img src="<%= @tweet.user.profile_url %>" width="60" height="60" class="rounded-circle mb-2" >
+    <td><%= image_tag(@tweet.user.profile_url, size: "100x100") %></td>
 </p>
 </p>
 
 <p>
 <strong>Content:</strong>
-<%= @tweet.content %>
+  <%= @tweet.content %>
 </p>
 
-
+<p>
+<strong>Likes:</strong>
+  <%= @tweet.likes.each do |u| %>
+  <div>
+    <td><%= image_tag(tweet.user.profile_url, size: "100x100") %></td>
+    <%= user.user.name %></td>
+  </div>
+  <% end %>
+</p>
 
 <button type="button" class="btn btn-outline-primary"><%= link_to 'Edit', edit_tweet_path(@tweet) %> </button>
 <button type="button" class="btn btn-outline-primary"><%= link_to 'Back', tweets_path %> </button>
 
+ <div class="container my-4"><%= link_to 'Back to Tweets', root_path %></div>
+<% end %>

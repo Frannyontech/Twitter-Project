@@ -3,23 +3,22 @@ class LikesController < ApplicationController
   before_action :set_like, only: [:destroy]
   skip_before_action :verify_authenticity_token  
 
-  def create
-    if existing_like?
-      flash[:notice] = 'ya le diste like'
-    else
-      @tweet.likes.create(user_id: current_user.id)
-    end
-    redirect_to root_path
-  end
   
-  def destroy
-    if existing_like?
-      @like.destroy
-    else
-      flash[:notice] = 'No se puede borrar, no tiene like'
+def create
+    tweet = Tweet.find(params[:id])
+    like = Like.create(user_id: current_user.id, tweet_id: tweet.id)
+        
+    if like.save
+        redirect_to root_path, notice: "You just added a like!"
     end
-    redirect_to root_path
-  end
+end
+  
+def destroy
+  tweet = Tweet.find(params[:id])
+  like = tweet.likes.find_by(user_id: current_user.id)
+  like.destroy
+  redirect_to root_path, notice: "You just added a dislike!"
+end
 
 
   def set_tweet
