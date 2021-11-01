@@ -29,7 +29,7 @@
           <% @tweets.each do |tweet| %>       
          
             <tr>
-              <td><%= image_tag tweet.user.profile_url, width: "64x64rem" %></td>
+              <td><%= image_tag tweet.user.profile_url, size: "100x100" %></td>
               <td>
                 <% tweet.content.split.each do |word| %>
                   <% if word.start_with?('#') %>
