@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_25_195633) do
+ActiveRecord::Schema.define(version: 2021_10_31_224836) do
+
+  create_table "friends", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "friend_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_friends_on_user_id"
+  end
 
   create_table "likes", force: :cascade do |t|
     t.integer "tweet_id"
@@ -29,6 +37,8 @@ ActiveRecord::Schema.define(version: 2021_10_25_195633) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.integer "rt_ref"
+    t.integer "tweet"
+    t.integer "tweet_id"
     t.index ["retweet_id"], name: "index_tweets_on_retweet_id"
     t.index ["user_id"], name: "index_tweets_on_user_id"
   end
