@@ -1,14 +1,13 @@
 Rails.application.routes.draw do
   
+  resources :friends
   # get 'likes/create'
   # resources :likes
   # devise_for :users
   
   resources :tweets do
     resources :likes
-    member do
       post 'retweet'
-    end
   end 
 
   resources :users do
@@ -22,5 +21,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root "tweets#index"
 
-  
+  # friends-followers
+  post 'user/:user_id', to: 'friends#create', as: 'friend_create'
+  delete 'user/:user_id', to: 'friends#destroy', as: 'friend_destroy'
 end

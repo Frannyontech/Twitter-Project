@@ -4,6 +4,8 @@ class TweetsController < ApplicationController
   # GET /tweets or /tweets.json
   def index
     @tweet = Tweet.new
+    @user = current_user
+    @users = User.all
     # @tweets = Tweet.all.order("created_at DESC").limit(50)
     @tweets = Tweet.order(created_at: :desc).page params[:page]
   end
@@ -31,27 +33,14 @@ class TweetsController < ApplicationController
     respond_to do |format|
       if @tweet.save
         format.html { redirect_to root_path, notice: "Tweet was successfully created." }
-        format.json { render :show, status: :created, location: @tweet }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @tweet.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PATCH/PUT /tweets/1 or /tweets/1.json
-  def update
-    respond_to do |format|
-      if @tweet.update(tweet_params)
-        format.html { redirect_to @tweet, notice: "Tweet was successfully updated." }
-        format.json { render :show, status: :ok, location: @tweet }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @tweet.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
+  
   # DELETE /tweets/1 or /tweets/1.json
   def destroy
     @tweet.destroy
@@ -63,7 +52,7 @@ class TweetsController < ApplicationController
 
   def retweet
     
-    original_tweet = Tweet.find(params[:id])
+    original_tweet = Tweet.find(params[:tweet_id].to_i)
     @tweet = Tweet.create(
       content: original_tweet.content,
       user_id: original_tweet.user_id,
@@ -75,8 +64,6 @@ class TweetsController < ApplicationController
     end
   end 
   
-  
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_tweet
@@ -87,5 +74,5 @@ class TweetsController < ApplicationController
     def tweet_params
       params.require(:tweet).permit(:content, :user_id)
     end
-  end
+end
 
