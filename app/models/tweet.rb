@@ -10,9 +10,10 @@ class Tweet < ApplicationRecord
     belongs_to :tweet, optional: true
     has_many :tweets, dependent: :destroy
 
-    # def retweet_count
-    #   Tweet.where(tweet_id: :self.id).count
-    # end
+    def retweet_count
+      Tweet.where(tweet_id: :self.id).count
+    end
+    
 
     def retweets
       retweet_count = Tweet.group(:tweet_id).count

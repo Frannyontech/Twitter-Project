@@ -74,3 +74,6 @@ gem 'faker'
 
 # 23/10/2021
 gem 'kaminari'
+
+# 02/11/2021
+gem 'activeadmin'

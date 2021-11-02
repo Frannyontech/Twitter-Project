@@ -3,11 +3,16 @@ class TweetsController < ApplicationController
 
   # GET /tweets or /tweets.json
   def index
+    if params[:q]
+      @tweets = Tweet.where("content LIKE ?", "%#{params[:q]}%").order(created_at: :desc).page(params[:page])
+    else
+      @tweets = Tweet.order(created_at: :desc).page params[:page]
+    end
     @tweet = Tweet.new
     @user = current_user
     @users = User.all
     # @tweets = Tweet.all.order("created_at DESC").limit(50)
-    @tweets = Tweet.order(created_at: :desc).page params[:page]
+    
   end
 
   # GET /tweets/1 or /tweets/1.json

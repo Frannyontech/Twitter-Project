@@ -3,11 +3,10 @@
 <p>
   <strong>Tweet:</strong>
   <%= @tweet.user.name %>
-    <td><%= image_tag(@tweet.user.profile_url, size: "100x100") %></td>
-</p>
 </p>
 
 <p>
+
 <strong>Content:</strong>
   <%= @tweet.content %>
 </p>
@@ -16,14 +15,13 @@
 <strong>Likes:</strong>
   <%= @tweet.likes.each do |u| %>
   <div>
-    <td><%= image_tag(tweet.user.profile_url, size: "100x100") %></td>
-    <%= user.user.name %></td>
+    <td><%= image_tag(@tweet.user.profile_url, size: "100x100") %></td>
   </div>
   <% end %>
 </p>
 
 <button type="button" class="btn btn-outline-primary"><%= link_to 'Edit', edit_tweet_path(@tweet) %> </button>
-<button type="button" class="btn btn-outline-primary"><%= link_to 'Back', tweets_path %> </button>
+
 
  <div class="container my-4"><%= link_to 'Back to Tweets', root_path %></div>
 <% end %>

@@ -31,13 +31,14 @@
             <tr>
               <td><%= image_tag tweet.user.profile_url, size: "100x100" %></td>
               <td>
-                <% tweet.content.split.each do |word| %>
-                  <% if word.start_with?('#') %>
-                    <%= link_to word, root_path(q: word) %>
+                <div class="content col-md h6">
+                  <% if !tweet.tweet_id.nil? %>
+                    <div class="text-primary m-0 p-0"><%= "RT @#{tweet.user.name}'s tweet" %></div>
                   <% else %>
-                    <%= word %>                      
+                    <div class="text-primary m-0 p-0"><%= "@#{tweet.user.name}" %></div>
                   <% end %>
-                <% end %> 
+                  <%= hashtag(tweet.content) %>
+                </div> 
               </td>    
               
               <td>Posted by <%= tweet.user.email %></td> 
@@ -53,7 +54,7 @@
               </td>         
                            
               <td><%= link_to image_tag('retweet.png', size: "25x20"), tweet_retweet_path(tweet.id),{method: :post} %> 
-                <%# <%= tweet.retweet_count %> %>
+                <%# <%= tweet.retweet_count %> 
               </td>                    
                                  
               <td><i class="far fa-clock mr-1"></i> <%= link_to time_ago_in_words(tweet.created_at), tweet_path(tweet.id) %></td> 
@@ -61,9 +62,9 @@
               <td><% if user_signed_in? && current_user.id != tweet.user.id %>
                     <% pre_follow = current_user.friends.find { |friend| friend.friend_id == tweet.user.id } %>
                       <% if pre_follow %>
-                        <button><%= link_to 'Delete Friend', friend_destroy_path(tweet.user.id), method: :delete %></button>
+                        <button><%= link_to 'Delete Friend', destroy, method: :delete %></button>
                       <% else %>
-                        <button><%= link_to 'Add Friend', new_friend_path(tweet.user.id), method: :post %></button> 
+                        <button><%= link_to 'Add Friend', friend_create_path(tweet.user.id), method: :post %></button> 
                       <% end %> 
                   <% end %> 
               </td>                                        

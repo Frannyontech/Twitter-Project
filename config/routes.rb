@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   
-  resources :friends
+  # active admin
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
+
+  
+  resources :hashtag
   # get 'likes/create'
   # resources :likes
   # devise_for :users
