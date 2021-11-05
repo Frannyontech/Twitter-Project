@@ -1,5 +1,7 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, except: [:index, :show]
+  
 
   # GET /tweets or /tweets.json
   def index
@@ -14,6 +16,8 @@ class TweetsController < ApplicationController
     # @tweets = Tweet.all.order("created_at DESC").limit(50)
     
   end
+
+  
 
   # GET /tweets/1 or /tweets/1.json
   def show

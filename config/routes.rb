@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   
+  get 'api/create', to:'api#create'
+  get 'api/:first_date/:last_date', to:'api#by_date'
   post 'api/news', as: 'api_news'
+  
   # active admin
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)

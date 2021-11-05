@@ -30,12 +30,7 @@ ActiveAdmin.register User do
       u.likes.count
     end
     column 'Retweets', :user do |u|
-      arr = []
-			u.tweets.each do |tweet|
-				arr << tweet.tweet_id
-			end
-			arr.delete(nil)
-			arr.length
+      u.tweets.where.not(rt_ref: id).count
     end
     
     actions

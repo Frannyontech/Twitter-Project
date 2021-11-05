@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class ApiControllerTest < ActionDispatch::IntegrationTest
-  test "should get news" do
-    get api_news_url
+  test "should get create" do
+    get api_create_url
     assert_response :success
   end
 

@@ -72,9 +72,9 @@
               <td><% if user_signed_in? && current_user.id != tweet.user.id %>
                     <% pre_follow = current_user.friends.find { |friend| friend.friend_id == tweet.user.id } %>
                       <% if pre_follow %>
-                        <button><%= link_to 'Delete Friend', friend_destroy_path(tweet.user.id), method: :delete %></button>
+                        <button><%= link_to 'Delete Friend', friends_destroy_path(tweet.user.id), method: :delete %></button>
                       <% else %>
-                        <button><%= link_to 'Add Friend',  method: :post %></button> 
+                        <button><%= link_to 'Add Friend', friends_create_path(@user.id), method: :post %></button> 
                       <% end %> 
                   <% end %> 
               </td>                                        
