@@ -15,7 +15,7 @@
 <strong>Likes:</strong>
   <%= @tweet.likes.each do |u| %>
   <div>
-    <td><%= image_tag(@tweet.user.profile_url, size: "100x100") %></td>
+    <td><%= image_tag(@tweet.user.profile_url, size: "100x100", class: "mr-3 figure-img img-fluid rounded-circle") %></td>
   </div>
   <% end %>
 </p>

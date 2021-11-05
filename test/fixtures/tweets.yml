@@ -2,6 +2,8 @@
 
 one:
   tweet: MyText
+  user: one
 
 two:
   tweet: MyText
+  user: two

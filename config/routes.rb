@@ -1,14 +1,11 @@
 Rails.application.routes.draw do
   
+  post 'api/news', as: 'api_news'
   # active admin
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  
-  resources :hashtag
-  # get 'likes/create'
-  # resources :likes
-  # devise_for :users
+  get '/:hashtag', to: 'tweets#hashtag_search', as: 'hashtag'
   
   resources :tweets do
     resources :likes
@@ -27,6 +24,6 @@ Rails.application.routes.draw do
   root "tweets#index"
 
   # friends-followers
-  post 'user/:user_id', to: 'friends#create', as: 'friend_create'
-  delete 'user/:user_id', to: 'friends#destroy', as: 'friend_destroy'
+  post 'friend/:friend_id', to: 'friends#create'
+  delete 'friend/:friend_id', to: 'friends#destroy'
 end

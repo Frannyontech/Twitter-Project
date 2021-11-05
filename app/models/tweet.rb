@@ -11,7 +11,7 @@ class Tweet < ApplicationRecord
     has_many :tweets, dependent: :destroy
 
     def retweet_count
-      Tweet.where(tweet_id: :self.id).count
+      retweets = Tweet.all.count {|tweet| tweet.tweet_id == self.id}
     end
     
 
