@@ -5,10 +5,20 @@ class Tweet < ApplicationRecord
     
     paginates_per 50
 
-
   # relacion recursiva de retweet
     belongs_to :tweet, optional: true
     has_many :tweets, dependent: :destroy
+
+    scope :tweets_for_me, ->(users_list) { where(
+        user_id: users_list.map do |friend|
+            friend.friend_id 
+        end
+    ) } 
+
+    scope :by_date, ->(start_date, end_date) {where(
+      "(created_at) >= ? AND (created_at) <= ?", start_date, end_date
+    ) }
+
 
     def retweet_count
       retweets = Tweet.all.count {|tweet| tweet.tweet_id == self.id}

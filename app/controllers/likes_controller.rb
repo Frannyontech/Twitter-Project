@@ -1,23 +1,41 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_like, only: [:destroy]
-  skip_before_action :verify_authenticity_token  
+  before_action :find_like, only: [:destroy]
+  before_action :find_tweet
+ 
 
   
   def create
-    tweet = Tweet.find(params[:tweet_id])
-        like = Like.create(user_id: current_user.id, tweet_id: tweet.id)
-        
-        if like.save
-            redirect_to root_path, notice: "You just added a like!"
-        end
+  if user_signed_in?
+      @tweet.likes.create(user_id: current_user.id)
+      redirect_to root_path
+  else
+      redirect_to root_path, alert: 'for like an user, you must sign in'
   end
-    
-  def destroy
-    if already_liked?
+end
+
+def destroy
+  if already_liked?
       @like.destroy
       redirect_to root_path
-    end
   end
+end
+
+private 
+
+def find_tweet
+  @tweet = Tweet.find(params[:tweet_id])
+end
+
+def find_like
+  @like = @tweet.likes.find(params[:id])
+end
+
+def already_liked?
+  Like.where(
+      user_id: current_user.id,
+      tweet_id: params[:tweet_id]
+  ).exists?
+end
 end
 

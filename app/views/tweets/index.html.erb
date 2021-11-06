@@ -38,15 +38,13 @@
                     <div class="text-primary m-0 p-0"><%= "@#{tweet.user.name}" %></div>
                   <% end %>
                   <p>
-                  <% content_tweet_array = tweet.content.split %>
-                  <% content_tweet_array.each do |elem| %>
-                    <% if elem.start_with?("#") %>
-                      <% elem.slice!(0)%>
-                      <a href="?hashtag=<%= elem %>"> # <%= elem %></a>
-                    <% else %>
-                      <%= elem %>
-                    <% end %>
+                  <% tweet.content.split.each do |word| %>
+                  <% if word.start_with?('#') %>
+                    <%= link_to word, root_path(q: word) %>
+                  <% else %>
+                    <%= word %>                      
                   <% end %>
+                <% end %> 
                   </p>
                 </div> 
               </td>    
@@ -72,9 +70,9 @@
               <td><% if user_signed_in? && current_user.id != tweet.user.id %>
                     <% pre_follow = current_user.friends.find { |friend| friend.friend_id == tweet.user.id } %>
                       <% if pre_follow %>
-                        <button><%= link_to 'Delete Friend', friends_destroy_path(tweet.user.id), method: :delete %></button>
+                        <button><%= link_to 'Delete Friend', destroy_path(tweet.user.id), method: :delete %></button>
                       <% else %>
-                        <button><%= link_to 'Add Friend', friends_create_path(@user.id), method: :post %></button> 
+                        <button><%= link_to 'Add Friend', create_path(@user.id), method: :post %></button> 
                       <% end %> 
                   <% end %> 
               </td>                                        
