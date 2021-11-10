@@ -14,6 +14,12 @@ class User < ApplicationRecord
   end
 
   def retweets
+    tweets = self.tweets
+    cont = 0
   end 
   
+  def friends_count
+    self.friends.count
+  end
+
 end

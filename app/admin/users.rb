@@ -21,7 +21,7 @@ ActiveAdmin.register User do
     column :name
     column :email
     column 'Following', :user do |u|
-      u.friends.count
+      u.friends_count
     end
     column 'Tweets', :user do |u|
       u.tweets.count

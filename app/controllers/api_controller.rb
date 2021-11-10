@@ -1,8 +1,7 @@
 class ApiController < ApplicationController
   before_action :verify_authenticity_token, only:[:create]
   skip_before_action :verify_authenticity_token, on: [:create]
-  http_basic_authenticate_with name: "frang@example.com", password: "1234567", except: [:news, :by_date]
-
+  
   def news
     
     tweets = Tweet.all.order(created_at: :desc).limit(50)
@@ -38,15 +37,20 @@ class ApiController < ApplicationController
   end
 
   def create
-    data = JSON.parse(request.body.read)["content"]
-    user_email = JSON.parse(request.body.read)["user"]
-    @user = User.find_by(email: user_email)
-    @tweet = Tweet.create(content: data, user_id: @user.id, parent_tweet: nil, content_retweet: nil)
-
-    if @tweet.save
-      render json: @tweet, status: :ok
+     
+    if @user.nil?
+      render json: {status: 'ERROR', message: "Error en autenticación. Email o password incorrecto."}, status: :unauthorized
     else
-      render json: "Error en creacion, del tweet", status: :internal_server_error
+      tweet = Tweet.new(tweet_params)
+      tweet.user = @user
+    
+      if tweet.save
+        render json: {status: 'SUCCESS', message: "Tweet creado", data:tweet}, status: :ok
+      else
+        render json: {status: 'ERROR', message: "Tweet no pudo ser creado", data:tweet.errors}, status: :unprocessable_entity
+      end
+      
     end
   end
+
 end
